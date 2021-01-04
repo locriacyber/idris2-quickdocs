@@ -1,0 +1,107 @@
+.debug div {
+  border: 1px solid red;
+}
+
+#sidebar {
+  width: 280px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #ccc;
+}
+
+.searchbox-container {
+  width: 100%;
+  height: 31px;
+  flex-shrink: 0;
+  background-color: rgb(37, 37, 37);
+  /*border-bottom: 3px solid rgb(101, 159, 219);*/
+  display: flex;
+  flex-direction: row;
+}
+
+.searchbox {
+  width: 100%;
+}
+
+#i2d_search_results {
+  position: relative;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  flex-grow: 100;
+  margin: 0;
+  padding: 0;
+}
+
+#content {
+  flex-grow: 100;
+  overflow: hidden;
+}
+
+#content > iframe {
+  border: 0;
+}
+
+.result-hidden {
+  display: none;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.indexentry {
+  position: relative;
+}
+
+.indexentry .package {
+  float: right;
+  text-align: right;
+  font-size: 85%;
+}
+
+.indexentry .name {
+  color: #000;
+  font-family: Mensch, Menlo, "DejaVu Sans Mono", monospace;
+  background-color: inherit;
+}
+
+.indexentry a {
+  display: block;
+  padding: 4px;
+  background-color: inherit;
+
+  color: #000;
+  text-decoration: none;
+}
+
+.indexentry .dimmed {
+  color: #999;
+}
+
+.result-selected .dimmed {
+  color: rgb(50, 80, 109);
+}
+
+.indexentry:hover {
+  background-color: #eee;
+}
+
+.result-selected, .result-selected:hover {
+  background-color: rgb(101, 159, 219);
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  box-sizing: border-box;
+
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  font-size: 10pt;
+}
+
+* {
+  box-sizing: inherit;
+}
