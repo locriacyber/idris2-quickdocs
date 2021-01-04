@@ -1,0 +1,32 @@
+# Idris2 Documentation
+
+Use the search field on the left to perform a search, results will update as
+you type.
+
+### Fuzzy Search Patterns
+
+You can use dots to quickly skip over namespaces, e.g. enter `C.M.S.run` to
+find `Control.Monad.State.runState`
+
+### Available Packages
+
+{% for pkg in packages %} * [{{ pkg }}]({{ pkg }}/index.html)
+{% endfor %}
+
+### Downloads
+
+Each `tar.gz` contains self-contained HTML for offline viewing (but without
+"quick search" capability):
+
+{% for dl in downloads %} * [{{ dl }}]({{ dl }})
+{% endfor %}
+
+### Source Code
+
+#### Idris2 branch with `--mkdoc` support
+available at:
+<a href="https://github.com/cypheon/Idris2/tree/mkdoc" target="_blank">https://github.com/cypheon/Idris2/tree/mkdoc</a>
+
+#### Index Builder and Search JavaScript
+available at:
+<a href="https://git.sr.ht/~cypheon/idris2-quickdocs" target="_blank">https://git.sr.ht/~cypheon/idris2-quickdocs</a>

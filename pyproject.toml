@@ -7,6 +7,8 @@ authors = ["Johann Rudloff <johann@sinyax.net>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 beautifulsoup4 = "^4.9.3"
+markdown = "^3.3.3"
+jinja2 = "^2.11.2"
 
 [tool.poetry.dev-dependencies]
 

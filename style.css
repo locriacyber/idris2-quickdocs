@@ -93,6 +93,24 @@
   background-color: rgb(101, 159, 219);
 }
 
+article.copy {
+  margin: 3em auto;
+  width: 680px;
+}
+ article.copy code {
+   background-color: #eeeeee;
+   border: 1px solid #dddddd;
+   border-radius: 2px;
+   padding: 1px 0.4em;
+ }
+
+@media(max-width: 720px) {
+  article.copy {
+    margin: 3em 1em;
+    width: auto;
+  }
+}
+
 html, body {
   margin: 0;
   height: 100%;
