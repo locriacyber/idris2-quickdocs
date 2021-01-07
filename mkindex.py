@@ -58,12 +58,11 @@ class IndexBuilder:
         if 'namespace' not in docclass:
             return
 
+        namespace = soup.select('h1')[0].get_text(strip=True)
+
         for span in soup.select('dl.decls > dt > span.name'):
             id = span.parent['id']
-            full_name = span.get_text(strip=True)
-            namespace, name = split_ns(full_name)
-            # print(f"{full_name} -> {namespace} , {name}")
-            # namespace, name = full_name.rsplit('.', 1)
+            name = span.get_text(strip=True)
             entries.append(IndexEntry(
                 name,
                 namespace,
