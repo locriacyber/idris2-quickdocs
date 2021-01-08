@@ -29,3 +29,5 @@ done
 
 poetry run ./mkindex.py data
 poetry run ./mkhome.py data
+
+chmod -R ugo+rX data
