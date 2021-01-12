@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
 let data = [];
 let cells = [];
@@ -17,7 +17,7 @@ const IDX_TARGET = 3;
 const IDX_NAME_LOWER = 4;
 const IDX_FULLNAME_LOWER = 5;
 
-function renderEntry(entry, idx) {
+function renderEntry (entry, idx) {
   const mkEl = (s) => document.createElement(s);
   const li = mkEl('li');
   li.className = 'indexentry';
@@ -48,7 +48,7 @@ function renderEntry(entry, idx) {
   return li;
 }
 
-function isSubsequence(s, query) {
+function isSubsequence (s, query) {
   let pos = 0;
   let queryPos = 0;
 
@@ -66,35 +66,35 @@ function isSubsequence(s, query) {
   return true;
 }
 
-function matchSubsequence(item, query) {
+function matchSubsequence (item, query) {
   return isSubsequence(item[IDX_FULLNAME_LOWER], query);
 }
 
-function matchNamespace(item, query) {
+function matchNamespace (item, query) {
   const quoted = query.replaceAll(/[.+*\\()[\]<>$^]/g, '\\$&');
   const reQuery = new RegExp(quoted.replaceAll('\\.', '.*\\.'));
   return reQuery.test(item[IDX_FULLNAME_LOWER]);
 }
 
-function matchSimple(item, query) {
-  if (item[IDX_FULLNAME_LOWER].indexOf(query) != -1) {
+function matchSimple (item, query) {
+  if (item[IDX_FULLNAME_LOWER].indexOf(query) !== -1) {
     return true;
   }
   return false;
 }
 
 const matchers = {
-  'simple': matchSimple,
-  'subsequence': matchSubsequence,
-  'namespace': matchNamespace,
+  simple: matchSimple,
+  subsequence: matchSubsequence,
+  namespace: matchNamespace,
 };
 
-function openResult(linkTarget) {
+function openResult (linkTarget) {
   const iframe = document.querySelector('#content iframe');
   iframe.src = linkTarget;
 }
 
-function clickResult(evt) {
+function clickResult (evt) {
   const linkTarget = evt.currentTarget.getAttribute('href');
 
   openResult(linkTarget);
@@ -108,7 +108,7 @@ function clickResult(evt) {
   return false;
 }
 
-function searchKeyDown(evt) {
+function searchKeyDown (evt) {
   if (evt.key === 'ArrowDown') {
     ++selected;
     updateSelected();
@@ -130,7 +130,7 @@ function searchKeyDown(evt) {
   }
 }
 
-function updateCellVisibility(startIndex) {
+function updateCellVisibility (startIndex) {
   // Keep track of how many cells where "switched" from display "block" <->
   // "none" to limit time for frame update
   let cellsChanged = 0;
@@ -159,7 +159,7 @@ function updateCellVisibility(startIndex) {
   }
 }
 
-function updateSearchResults(evt) {
+function updateSearchResults (evt) {
   const query = evt.target.value.toLocaleLowerCase('en-US');
   matched = [];
 
@@ -185,7 +185,7 @@ function updateSearchResults(evt) {
   updateSelected();
 }
 
-function updateSelected() {
+function updateSelected () {
   selected = Math.max(0, Math.min(selected, matched.length - 1));
   let selectedCell = undefined;
   for (let i = 0; i < cells.length; ++i) {
@@ -209,7 +209,7 @@ function updateSelected() {
   }
 }
 
-function init() {
+function init () {
   if (initialized) {
     // do not init twice
     return;
@@ -223,7 +223,7 @@ function init() {
     if (res.ok) {
       return res.json();
     } else {
-      throw new Error("error loading index: " + res.status);
+      throw new Error('error loading index: ' + res.status);
     }
   }).then((index) => {
     data = index;
@@ -267,7 +267,7 @@ function init() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', init, {once: true});
+document.addEventListener('DOMContentLoaded', init, { once: true });
 if (document.readyState === 'interactive') {
   init();
 }
