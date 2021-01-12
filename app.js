@@ -5,6 +5,7 @@ let cells = [];
 let initialized = false;
 let matched = [];
 let selected = 0;
+let matcher = 'namespace';
 
 let pendingUpdate = null;
 
@@ -70,7 +71,7 @@ function matchSubsequence(item, query) {
 }
 
 function matchNamespace(item, query) {
-  const quoted = query.replaceAll(/[.+*\\()\[\]<>$^]/g, '\\$&');
+  const quoted = query.replaceAll(/[.+*\\()[\]<>$^]/g, '\\$&');
   const reQuery = new RegExp(quoted.replaceAll('\\.', '.*\\.'));
   return reQuery.test(item[IDX_FULLNAME_LOWER]);
 }
@@ -81,6 +82,12 @@ function matchSimple(item, query) {
   }
   return false;
 }
+
+const matchers = {
+  'simple': matchSimple,
+  'subsequence': matchSubsequence,
+  'namespace': matchNamespace,
+};
 
 function openResult(linkTarget) {
   const iframe = document.querySelector('#content iframe');
@@ -100,8 +107,6 @@ function clickResult(evt) {
   evt.preventDefault();
   return false;
 }
-
-const matches = matchNamespace;
 
 function searchKeyDown(evt) {
   if (evt.key === 'ArrowDown') {
@@ -160,6 +165,7 @@ function updateSearchResults(evt) {
 
   console.log(`search (${cells.length} / ${data.length}): `, query);
   const startTime = Number(new Date());
+  const matches = matchers[matcher];
 
   for (let i = 0; i < data.length; ++i) {
     const entryMatches = matches(data[i], query);
@@ -217,7 +223,7 @@ function init() {
     if (res.ok) {
       return res.json();
     } else {
-      throw new Error("error loading index: " + e.status);
+      throw new Error("error loading index: " + res.status);
     }
   }).then((index) => {
     data = index;
