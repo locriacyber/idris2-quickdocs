@@ -264,6 +264,15 @@ function init () {
   iframe.addEventListener('load', (evt) => {
     console.log('iframe loaded', evt);
     document.title = iframe.contentWindow.document.title;
+
+    iframe.contentWindow.document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Tab') {
+        searchBox.focus();
+        searchBox.select();
+        evt.preventDefault();
+        return false;
+      }
+    });
   });
 }
 
