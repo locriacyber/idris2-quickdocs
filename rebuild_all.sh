@@ -23,7 +23,7 @@ build_doc() {
   ( cd data && tar czf "${pkg}-idris2docs.tar.gz" "$pkg")
 }
 
-for pkg in base contrib network prelude; do
+for pkg in base contrib network prelude test; do
   build_doc "$pkg"
 done
 
