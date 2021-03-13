@@ -6,7 +6,7 @@ set -o pipefail
 set -x
 
 src_root=${IDRIS2_SRC:-$PWD/../mkdocs}
-idris2=${IDRIS2_EXECUTABLE:-$PWD/../mkdocs/build/exec/idris2}
+idris2=${IDRIS2_EXECUTABLE:-$src_root/build/exec/idris2}
 
 build_doc() {
   pkg="$1"
