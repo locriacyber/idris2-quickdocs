@@ -71,7 +71,8 @@ function matchSubsequence (item, query) {
 }
 
 function matchNamespace (item, query) {
-  const quoted = query.replaceAll(/[.+*\\()[\]<>$^]/g, '\\$&');
+  // Try to escape any characters that have special meaning in a regex
+  const quoted = query.replaceAll(/[.+*\\()[\]<>$|^]/g, '\\$&');
   const reQuery = new RegExp(quoted.replaceAll('\\.', '.*\\.'));
   return reQuery.test(item[IDX_FULLNAME_LOWER]);
 }
