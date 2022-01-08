@@ -60,8 +60,11 @@ class IndexBuilder:
 
         namespace = soup.select('h1')[0].get_text(strip=True)
 
-        for span in soup.select('dl.decls > dt > code > a > span.name'):
-            id = span.parent.parent.parent['id']
+        for dt in soup.select('dl.decls > dt'):
+            id = dt['id']
+            if id.startswith('$resolved'):
+                continue
+            span = dt.select('span.name')[0]
             name = span.get_text(strip=True)
             entries.append(IndexEntry(
                 name,
