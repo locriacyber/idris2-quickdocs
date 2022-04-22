@@ -1,23 +1,25 @@
 <script lang="ts">
-import { matchSimple, matchNamespace, matchSubsequence } from "$lib/consts"
 import type { IndexEntry } from "$lib/consts"
+import Fuse from "fuse.js"
+import VirtualList from "@sveltejs/svelte-virtual-list"
 
 export let data: IndexEntry[]
 export let selected: IndexEntry | undefined
 let searchTerm = ""
 
+const options = {
+  keys: ["name", "namespace", "package"],
+}
+
+$: fuse = new Fuse(data, options)
+
 function select(entry: IndexEntry) {
   selected = entry
 }
 
-function matchSearchTerm(searchTerm: string, entry: IndexEntry): boolean {
-  if (searchTerm == "") return true
-  const query = searchTerm.toLocaleLowerCase("en-US")
-  return matchSimple(entry, query)
-}
-
-function keyOfEntry(entry: IndexEntry): string {
-  return entry.name + "\0" + entry.namespace + "\0" + entry.package
+function matched(searchTerm: string, data: IndexEntry[]): IndexEntry[] {
+  if (searchTerm == "") return data
+  return fuse.search(searchTerm).map((o) => o.item)
 }
 </script>
 
@@ -31,12 +33,11 @@ function keyOfEntry(entry: IndexEntry): string {
   />
   <span class="key-shortcut">Tab ⇥</span>
 </div>
-<ul id="i2d_search_results">
-  {#each data as entry (entry)}
+<div id="i2d_search_results">
+  <VirtualList items="{matched(searchTerm, data)}" let:item="{entry}">
     <li
       class="indexentry"
       class:result-selected="{selected === entry}"
-      class:hidden="{!matchSearchTerm(searchTerm, entry)}"
       on:click="{() => select(entry)}"
     >
       <div class="name">{entry.name}</div>
@@ -45,13 +46,9 @@ function keyOfEntry(entry: IndexEntry): string {
         <span class="package dimmed">[{entry.package}]</span>
       </div>
     </li>
-  {/each}
-</ul>
+  </VirtualList>
+</div>
 
 <style>
 @import "../style.css";
-
-.hidden {
-  display: none;
-}
 </style>
