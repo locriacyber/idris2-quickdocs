@@ -22,7 +22,6 @@
   "type": "module",
   "dependencies": {
     "@sveltejs/svelte-virtual-list": "^3.0.1",
-    "fuse.js": "^6.5.3",
-    "fuzzysort": "^1.2.1"
+    "fuzzbunny": "https://github.com/locriacyber/fuzzbunny#master"
   }
 }
