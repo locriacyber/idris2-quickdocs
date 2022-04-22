@@ -94,8 +94,8 @@
   background-color: inherit;
 }
 
-.indexentry a {
-  display: block;
+.indexentry > * {
+  /* display: block; */
   padding: 4px;
   background-color: inherit;
 
