@@ -1,25 +1,27 @@
 <script lang="ts">
 import type { IndexEntry } from "$lib/consts"
-import Fuse from "fuse.js"
 import VirtualList from "@sveltejs/svelte-virtual-list"
 
 export let data: IndexEntry[]
 export let selected: IndexEntry | undefined
-let searchTerm = ""
-
-const options = {
-  keys: ["name", "namespace", "package"],
-}
-
-$: fuse = new Fuse(data, options)
+export let searchTerm = ""
 
 function select(entry: IndexEntry) {
   selected = entry
 }
 
-function matched(searchTerm: string, data: IndexEntry[]): IndexEntry[] {
+import { fuzzyFilter1 } from "fuzzbunny/fuzzbunny"
+
+function weighted(o) {
+  let name = o.scores.name || 0
+  let namespace = o.scores.namespace || 0
+  return name * 5 + namespace
+}
+function search(searchTerm: string, data: IndexEntry[]): IndexEntry[] {
   if (searchTerm == "") return data
-  return fuse.search(searchTerm).map((o) => o.item)
+  return fuzzyFilter1(data, searchTerm, { fields: ["name", "namespace"] })
+    .sort((a, b) => weighted(b) - weighted(a))
+    .map((o) => o.item)
 }
 </script>
 
@@ -34,7 +36,7 @@ function matched(searchTerm: string, data: IndexEntry[]): IndexEntry[] {
   <span class="key-shortcut">Tab ⇥</span>
 </div>
 <div id="i2d_search_results">
-  <VirtualList items="{matched(searchTerm, data)}" let:item="{entry}">
+  <VirtualList items="{search(searchTerm, data)}" let:item="{entry}">
     <li
       class="indexentry"
       class:result-selected="{selected === entry}"
