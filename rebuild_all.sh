@@ -12,7 +12,7 @@ build_doc() {
   pkg="$1"
   (
     cd "${src_root}/libs/$pkg"
-    rm -rf build/docs
+    #rm -rf build/docs
     "$idris2" --mkdoc "${pkg}.ipkg"
   )
 
