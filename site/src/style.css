@@ -51,16 +51,12 @@
 }
 
 #i2d_search_results {
-  position: relative;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  flex-grow: 100;
-  margin: 0;
-  padding: 0;
+  flex-grow: 1;
+  overflow: hidden;
 }
 
 #content {
-  flex-grow: 100;
+  flex-grow: 1;
   overflow: hidden;
 }
 
