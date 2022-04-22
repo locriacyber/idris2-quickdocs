@@ -14,7 +14,7 @@ To generate the documentation index, you need Python 3,
 fork](https://github.com/cypheon/Idris2/tree/mkdoc) (at least until the doc
 generation is ready to be upstreamed).
 
-## Usage
+## Simple Usage (Build only packages that come with Idris2)
 
 Updating and serving the docs is a bit rought for now, but all the pieces are
 available.
@@ -22,13 +22,34 @@ available.
 Run `poetry install` to install dependencies, then you can run the following:
 
 ```sh
-IDRIS2_EXECUTABLE=path/to/idris2 IDRIS2_SRC=path/to/idris2/source/code ./rebuild_all.sh
+IDRIS2_EXECUTABLE=path/to/idris2 IDRIS2_SRC=path/to/idris2/source/code ./rebuild_idris2_bundled_packages.sh
 ```
 
 The you can serve the current directory (don't do this in production!):
 
 ```sh
-python3 -mhttp.server 8001
+cd site
+yarn
+yarn dev
 ```
 
-And your docs will be served at http://127.0.0.1:8001/
+## More Complicated Usage (Build docs for more packages)
+
+You can put docs from other packages too.
+
+Pseudo shell code:
+
+```fish
+set PACKAGE_DIR path/to/idris2/package
+set PACKAGE_NAME package_name
+
+pushd $PACKAGE_DIR
+idris2 --mkdoc *.ipkg  ## build docs
+set docs $PWD/build/docs
+popd
+cp -r $docs data/$PACKAGE_NAME  ## copy docs to data
+poetry run mkindex.py data
+poetry run mkhome.py data
+```
+
+Remember to run `poetry install` to install dependencies first!
