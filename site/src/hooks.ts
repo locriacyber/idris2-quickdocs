@@ -6,8 +6,9 @@ export const project_root = find_project_root()
 
 // Workaround for https://github.com/sveltejs/kit/issues/4709
 export const handle: Handle = async function({ event, resolve: res }) {
-  if (event.url.pathname.startsWith("/data/")) {
-    const relpath = event.url.pathname.slice("/data/".length)
+  const url_data_starts = event.url.pathname.indexOf("/data/")
+  if (url_data_starts >= 0) {
+    const relpath = event.url.pathname.slice(url_data_starts + "/data/".length)
     return new Response(await fs.readFile(path.join(await project_root, "../data", relpath)))
   }
 
