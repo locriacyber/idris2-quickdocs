@@ -23,6 +23,6 @@
   "type": "module",
   "dependencies": {
     "fuzzbunny": "https://github.com/locriacyber/fuzzbunny#master",
-    "svelte-virtual-list": "https://github.com/gitbreaker222/svelte-virtual-list#master"
+    "svelte-virtual-list-ce": "https://github.com/gitbreaker222/svelte-virtual-list#master"
   }
 }

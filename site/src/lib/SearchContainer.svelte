@@ -1,14 +1,16 @@
 <script lang="ts">
 import type { IndexEntry } from "$lib/search"
 import { search } from "$lib/search"
-import VirtualList from "svelte-virtual-list"
+import VirtualList from "svelte-virtual-list-ce"
 
-export let data: IndexEntry[]
-let selected: IndexEntry | undefined
-let searchTerm = ""
+export let data: IndexEntry[] = []
+export let selected: IndexEntry | undefined
+export let searchTerm = ""
+
+let search_results: IndexEntry[] = []
+$: search_results = search(searchTerm, data)
 
 let el_list: VirtualList | undefined
-
 $: {
   searchTerm
   el_list?.scrollToIndex(0, {
@@ -31,8 +33,9 @@ function select(entry: IndexEntry) {
   />
   <span class="key-shortcut">Tab ⇥</span>
 </div>
+<dir id="i2d_search_info">{search_results.length} Results</dir>
 <div id="i2d_search_results">
-  <VirtualList items={search(searchTerm, data)} bind:this={el_list} let:item={entry}>
+  <VirtualList items={search_results} bind:this={el_list} let:item={entry}>
     <li
       class="indexentry"
       class:result-selected="{selected === entry}"
@@ -91,6 +94,13 @@ function select(entry: IndexEntry) {
 #i2d_search_results {
   flex-grow: 1;
   overflow: hidden;
+}
+
+#i2d_search_info {
+  margin: 0;
+  padding: 0.5em 0 0 0.2em;
+  box-shadow: inset 0px 0px 5px #ccc;
+  line-height: 1;
 }
 
 .indexentry {
