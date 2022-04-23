@@ -31,3 +31,19 @@ export async function fetchIndex() {
     }
   })
 }
+
+import { fuzzyFilter1 } from "fuzzbunny/fuzzbunny"
+import type { FuzzyFilterResult1 } from "fuzzbunny/fuzzybunny-extra";
+
+export function weighted(o: FuzzyFilterResult1<IndexEntry>) {
+    let name = o.scores.name || 0
+    let namespace = o.scores.namespace || 0
+    return name * 5 + namespace
+}
+  
+export function search(searchTerm: string, data: IndexEntry[]): IndexEntry[] {
+    if (searchTerm == "") return data
+    return fuzzyFilter1(data, searchTerm, { fields: ["name", "namespace"] })
+      .sort((a, b) => weighted(b) - weighted(a))
+      .map((o) => o.item)
+}

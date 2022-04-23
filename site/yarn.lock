@@ -47,11 +47,6 @@
     sade "^1.7.4"
     vite "^2.9.0"
 
-"@sveltejs/svelte-virtual-list@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@sveltejs/svelte-virtual-list/-/svelte-virtual-list-3.0.1.tgz#3784d6426508836b4471bba8ba293430e73717d8"
-  integrity sha512-aF9TptS7NKKS7/TqpsxQBSDJ9Q0XBYzBehCeIC5DzdMEgrJZpIYao9LRLnyyo6SVodpapm2B7FE/Lj+FSA5/SQ==
-
 "@sveltejs/vite-plugin-svelte@^1.0.0-next.32":
   version "1.0.0-next.41"
   resolved "https://registry.yarnpkg.com/@sveltejs/vite-plugin-svelte/-/vite-plugin-svelte-1.0.0-next.41.tgz#4778502af8a23c65ceaa0b5225ed722d3ad6b5e0"
@@ -697,6 +692,10 @@ svelte-preprocess@^4.0.0, svelte-preprocess@^4.10.1:
     magic-string "^0.25.7"
     sorcery "^0.10.0"
     strip-indent "^3.0.0"
+
+"svelte-virtual-list@https://github.com/gitbreaker222/svelte-virtual-list#master":
+  version "3.1.0-beta.2"
+  resolved "https://github.com/gitbreaker222/svelte-virtual-list#31e7ed6faf2d037515fe0c9c3920866fb90bd236"
 
 svelte@^3.44.0:
   version "3.47.0"
