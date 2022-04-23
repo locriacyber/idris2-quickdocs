@@ -1,8 +1,8 @@
 <script lang="ts">
 import SearchContainer from "$lib/SearchContainer.svelte"
 import { onMount } from "svelte"
-import { fetchIndex } from "$lib/consts"
-import type { IndexEntry } from "$lib/consts"
+import { fetchIndex } from "$lib/search"
+import type { IndexEntry } from "$lib/search"
 import { base } from "$app/paths"
 
 let data: Promise<IndexEntry[]> | undefined

@@ -1,28 +1,23 @@
 <script lang="ts">
-import type { IndexEntry } from "$lib/consts"
-import VirtualList from "@sveltejs/svelte-virtual-list"
+import type { IndexEntry } from "$lib/search"
+import { search } from "$lib/search"
+import VirtualList from "svelte-virtual-list"
 
 export let data: IndexEntry[]
-export let selected: IndexEntry | undefined
-export let searchTerm = ""
+let selected: IndexEntry | undefined
+let searchTerm = ""
+
+let el_list: VirtualList | undefined
+
+$: {
+  searchTerm
+  el_list?.scrollToIndex(0, {
+    behavior: 'auto'
+  })
+}
 
 function select(entry: IndexEntry) {
   selected = entry
-}
-
-import { fuzzyFilter1 } from "fuzzbunny/fuzzbunny"
-import type { FuzzyFilterResult1 } from "fuzzbunny/fuzzybunny-extra";
-
-function weighted(o: FuzzyFilterResult1<IndexEntry>) {
-  let name = o.scores.name || 0
-  let namespace = o.scores.namespace || 0
-  return name * 5 + namespace
-}
-function search(searchTerm: string, data: IndexEntry[]): IndexEntry[] {
-  if (searchTerm == "") return data
-  return fuzzyFilter1(data, searchTerm, { fields: ["name", "namespace"] })
-    .sort((a, b) => weighted(b) - weighted(a))
-    .map((o) => o.item)
 }
 </script>
 
@@ -37,7 +32,7 @@ function search(searchTerm: string, data: IndexEntry[]): IndexEntry[] {
   <span class="key-shortcut">Tab ⇥</span>
 </div>
 <div id="i2d_search_results">
-  <VirtualList items="{search(searchTerm, data)}" let:item="{entry}">
+  <VirtualList items={search(searchTerm, data)} bind:this={el_list} let:item={entry}>
     <li
       class="indexentry"
       class:result-selected="{selected === entry}"
@@ -135,7 +130,8 @@ function search(searchTerm: string, data: IndexEntry[]): IndexEntry[] {
   background-color: #eee;
 }
 
-.result-selected, .result-selected:hover {
+.result-selected,
+.result-selected:hover {
   background-color: rgb(101, 159, 219);
 }
 </style>
