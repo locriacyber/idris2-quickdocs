@@ -7,7 +7,7 @@ from jinja2 import Template
 import markdown
 
 HTML_HEADER = ''' <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><title>Idris2 Docs</title><link rel="stylesheet" href="../style.css"></head><body class="nodebug"><article class="copy">
+<html lang="en"><head><meta charset="utf-8"><title>Idris2 Docs</title></head><body class="nodebug"><article class="copy">
 '''
 HTML_TRAILER = '''</article></body></html>'''
 

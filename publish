@@ -1,0 +1,22 @@
+#!/usr/bin/fish
+set -x BASE_URL "/idris2-quickdocs"
+cd (status dirname)
+pushd site
+yarn build
+cd build
+or exit 1
+popd
+
+if test -e cache
+    mkdir cache
+end
+rsync -a site/build/ cache/
+
+pushd cache
+git init
+git remote add origin git@github.com:locriacyber/idris2-quickdocs.git
+touch .nojekyll
+git add .
+and git commit -m "Update"
+and git push origin HEAD:gh-pages -f
+popd
