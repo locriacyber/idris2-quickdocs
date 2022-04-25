@@ -7,16 +7,21 @@ cd build
 or exit 1
 popd
 
-if test -e cache
-    mkdir cache
+if test ! -e cache
+    git worktree add cache gh-pages
+    or begin
+        echo local gh-pages branch does not exist
+        git fetch origin gh-pages
+        echo Please try again now
+        exit 1
+    end
 end
+
 rsync -a site/build/ cache/
 
 pushd cache
-git init
-git remote add origin git@github.com:locriacyber/idris2-quickdocs.git
 touch .nojekyll
 git add .
 and git commit -m "Update"
-and git push origin HEAD:gh-pages -f
+and git push
 popd
