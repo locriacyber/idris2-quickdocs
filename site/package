@@ -1,3 +1,3 @@
 cd build
 rm ../build.tar.xz
-tar --mtime=0000-00-00 --{owner,group}=root -cJf ../build.tar.xz .
+tar --mtime=0000000000 --{owner,group}=root --exclude "data/*.tar.gz" -cvJf ../build.tar.xz .

@@ -4,28 +4,48 @@ import { onMount } from "svelte"
 import { fetchIndex } from "$lib/search"
 import type { IndexEntry } from "$lib/search"
 import { base } from "$app/paths"
+import { goto, afterNavigate } from "$app/navigation"
+import { page } from "$app/stores"
 
-let data: Promise<IndexEntry[]> | undefined
+let data: Promise<IndexEntry[]> = fetchIndex()
 let selected: IndexEntry | undefined
 let viewing : string
 $: viewing = base + "/data/" +  (selected?.target || "home.html")
 
-onMount(() => {
-  data = fetchIndex()
+$: {
+  if (selected) {
+    const url = $page.url
+    url.searchParams.set('id', selected.name)
+    url.searchParams.set('ns', selected.namespace)
+    goto(url)
+  }
+}
+
+onMount(async () => {
+  const to = $page.url
+  const name = to.searchParams.get('id')
+  const namespace = to.searchParams.get('ns')
+  const data2 = await data
+  for (const entry of data2) {
+    if (entry.name == name && entry.namespace == namespace) {
+      selected = entry
+      break
+    }
+  }
 })
+
 </script>
 
 <div class="flex-container">
   <div id="sidebar">
-    {#if data}
-      {#await data}
-        <div>Loading</div>
-      {:then data}
-        <SearchContainer data="{data}" bind:selected />
-      {/await}
-    {:else}
+    <noscript>
       <div>Is JavaScript enabled?</div>
-    {/if}
+    </noscript>
+    {#await data}
+      <div>Loading</div>
+    {:then data}
+      <SearchContainer data="{data}" bind:selected />
+    {/await}
   </div>
   <div id="content">
     <iframe
