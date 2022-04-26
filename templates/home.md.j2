@@ -3,6 +3,8 @@
 Use the search field on the left to perform a search, results will update as
 you type. You can press `Tab ⇥` anywhere on the page to focus the search field.
 
+<a href="archive.tar.xz" download>Download website for offline use.</a> Make sure to use archive root as HTTP root (<code>/</code>).
+
 ### Fuzzy Search Patterns
 
 You can use dots to quickly skip over namespaces, e.g. enter `C.M.S.run` to
@@ -13,7 +15,7 @@ find `Control.Monad.State.runState`
 {% for pkg in packages %} * [{{ pkg }}]({{ pkg }}/index.html)
 {% endfor %}
 
-### Downloads
+### Download documentation for individual packages
 
 Each `tar.gz` contains self-contained HTML for offline viewing (but without
 "quick search" capability):

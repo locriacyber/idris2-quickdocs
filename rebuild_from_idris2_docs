@@ -1,0 +1,15 @@
+#!/usr/bin/env fish
+
+mkdir -p data
+
+# set -x IDRIS2_DOCS_LATEST path/to/docs/idris2/current
+
+for pkg in base contrib linear network prelude test
+    rm data/$pkg -rf
+    cp -r $IDRIS2_DOCS_LATEST"/"$pkg"_docs" data/$pkg
+end
+
+poetry run ./mkindex.py data
+poetry run ./mkhome.py data
+
+chmod -R ugo+rX data
