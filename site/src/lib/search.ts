@@ -19,8 +19,8 @@ export type IndexEntry = {
   target: string
 }
 
-export async function fetchIndex() {
-  let res = await fetch("data/index.json")
+export async function fetchIndex(url) {
+  let res = await fetch(url)
   let rawData = (await res.json()) as IndexEntryRaw[]
   return rawData.map((entry) => {
     return {

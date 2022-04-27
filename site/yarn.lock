@@ -693,7 +693,7 @@ svelte-preprocess@^4.0.0, svelte-preprocess@^4.10.1:
     sorcery "^0.10.0"
     strip-indent "^3.0.0"
 
-"svelte-virtual-list@https://github.com/gitbreaker222/svelte-virtual-list#master":
+"svelte-virtual-list-ce@https://github.com/gitbreaker222/svelte-virtual-list#master":
   version "3.1.0-beta.2"
   resolved "https://github.com/gitbreaker222/svelte-virtual-list#31e7ed6faf2d037515fe0c9c3920866fb90bd236"
 

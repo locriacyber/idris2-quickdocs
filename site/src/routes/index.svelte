@@ -7,7 +7,7 @@ import { base } from "$app/paths"
 import { goto, afterNavigate } from "$app/navigation"
 import { page } from "$app/stores"
 
-let data: Promise<IndexEntry[]> = fetchIndex()
+let data: Promise<IndexEntry[]> = fetchIndex("data/index.json")
 let selected: IndexEntry | undefined
 let viewing : string
 $: viewing = base + "/data/" +  (selected?.target || "home.html")
