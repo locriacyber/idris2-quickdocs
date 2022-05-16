@@ -32,7 +32,7 @@ export async function fetchIndex(url) {
   })
 }
 
-import { fuzzyFilter1 } from "fuzzbunny/fuzzbunny"
+import { fuzzyFilter1 } from "fuzzbunny/fuzzbunny.ts"
 import type { FuzzyFilterResult1 } from "fuzzbunny/fuzzybunny-extra";
 
 export function weighted(o: FuzzyFilterResult1<IndexEntry>) {
