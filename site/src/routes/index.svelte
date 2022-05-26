@@ -6,54 +6,42 @@ import type { IndexEntry } from "$lib/search"
 import { base } from "$app/paths"
 import { goto, afterNavigate } from "$app/navigation"
 import { page } from "$app/stores"
-import { browser } from "$app/env";
+import { browser } from "$app/env"
 
 let data: Promise<IndexEntry[]> = fetchIndex("data/index.json")
 let selected: IndexEntry | undefined = undefined
-let viewing : string
-$: viewing = base + "/data/" +  (selected?.target || "home.html")
+let viewing: string
+$: viewing = base + "/data/" + (selected?.target || "home.html")
 
-let name: string|undefined, namespace: string|undefined
+let elSearch: SearchContainer | undefined
 
-let elSearch : SearchContainer | undefined
-
-// after history back:
-$: {
-  if (elSearch) {
-    // requestAnimationFrame(() => {
-      // elSearch.getSelectedFromURL($page.url)
-      // elSearch.resetScroll()
-    // })
-  }
+function onNavigate(event: CustomEvent<IndexEntry>) {
+  console.log(event)
+  const { name, namespace } = event.detail
+  const url = new URL($page.url)
+  url.searchParams.set("id", name)
+  url.searchParams.set("ns", namespace)
+  goto(url.toString())
 }
 
-$: {
-  if (browser) {
-    const url = new URL($page.url)
-    url.searchParams.set('id', name)
-    url.searchParams.set('ns', namespace)
-    goto(url.toString())
+$: if (browser) {
+  const to = $page.url
+  let name = to.searchParams.get("id") || undefined
+  let namespace = to.searchParams.get("ns") || undefined
+  if (name && namespace) {
+    ;(async () => {
+      for (const entry of await data) {
+        if (entry.name == name && entry.namespace == namespace) {
+          selected = entry
+          requestAnimationFrame(() => {
+            elSearch?.resetScroll()
+          })
+          break
+        }
+      }
+    })()
   }
 }
-
-afterNavigate(({to}) => {
-  name = to.searchParams.get("id") || undefined
-  namespace = to.searchParams.get("ns") || undefined
-})
-
-// export function setURLFromSelected(replaceState=true) {
-//   if (selected) {
-//     const url = new URL($page.url)
-//     url.searchParams.set('id', selected.name)
-//     url.searchParams.set('ns', selected.namespace)
-//     if (url.toString() != $page.url.toString()) {
-//       console.log("aaa", url.toString(), $page.url.toString())
-//       goto(url.toString(), {
-//         replaceState,
-//       })
-//     }
-//   }
-// }
 </script>
 
 <div class="flex-container">
@@ -64,16 +52,20 @@ afterNavigate(({to}) => {
     {#await data}
       <div>Loading</div>
     {:then data}
-      <SearchContainer data="{data}" bind:selected bind:name bind:namespace bind:this={elSearch} />
+      <SearchContainer
+        data="{data}"
+        bind:selected
+        bind:this="{elSearch}"
+        on:navigate="{onNavigate}"
+      />
     {/await}
   </div>
   <div id="content">
-    <iframe
-      title="help"
-      style="width: 100%; height: 100%;"
-      src={viewing}
-    >
-    </iframe>
+    {#key viewing}
+      <!-- otherwise iframe will mess up browsing history; `location.replace` can also be used -->
+      <iframe title="help" style="width: 100%; height: 100%;" src="{viewing}">
+      </iframe>
+    {/key}
   </div>
 </div>
 
@@ -101,26 +93,9 @@ afterNavigate(({to}) => {
   height: 100%;
 }
 
-/* article.copy {
-  margin: 3em auto;
-  width: 680px;
-}
-article.copy code {
-   background-color: #eeeeee;
-   border: 1px solid #dddddd;
-   border-radius: 2px;
-   padding: 1px 0.4em;
- }
-
-@media(max-width: 720px) {
-  article.copy {
-    margin: 3em 1em;
-    width: auto;
-  }
-} */
-
 :global {
-  html, body {
+  html,
+  body {
     margin: 0;
     height: 100%;
     box-sizing: border-box;

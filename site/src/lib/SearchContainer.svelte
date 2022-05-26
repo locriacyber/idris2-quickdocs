@@ -4,24 +4,11 @@ import { search } from "$lib/search"
 import VirtualList from "svelte-virtual-list-ce"
 import { goto, afterNavigate } from "$app/navigation"
 import { page } from "$app/stores"
-import { onMount } from "svelte";
+import { onMount, createEventDispatcher } from "svelte";
 
 export let data: IndexEntry[] = []
 export let searchTerm = ""
-export let name: string | undefined
-export let namespace: string | undefined
 export let selected: IndexEntry | undefined
-
-$: {
-  if (selected && selected.name == name && selected.namespace == namespace) {}
-  else
-  for (const entry of data) {
-    if (entry.name == name && entry.namespace == namespace) {
-      selected = entry
-      break
-    }
-  }
-}
 
 onMount(() => {
   requestAnimationFrame(resetScroll)
@@ -38,9 +25,11 @@ $: {
   })
 }
 
+let v_start = 0, v_end = 0
+
 export function resetScroll() {
   for (let i =0;i<data.length;i++) {
-    if (data[i] == selected) {
+    if (data[i] == selected && !(i >= v_start && i <= v_end)) {
       el_list?.scrollToIndex(i, {
         behavior: 'auto',
       })
@@ -49,10 +38,11 @@ export function resetScroll() {
   }
 }
 
+const dispatch = createEventDispatcher();
+
 export function select(entry: IndexEntry) {
   selected = entry
-  name = selected.name
-  namespace = selected.namespace
+  dispatch("navigate", selected)
 }
 </script>
 
@@ -68,7 +58,7 @@ export function select(entry: IndexEntry) {
 </div>
 <dir id="i2d_search_info">{search_results.length} Results</dir>
 <div id="i2d_search_results">
-  <VirtualList items={search_results} bind:this={el_list} let:item={entry}>
+  <VirtualList items={search_results} bind:this={el_list} let:item={entry} bind:start={v_start} bind:end={v_end}>
     <li
       class="indexentry"
       class:result-selected="{selected === entry}"
