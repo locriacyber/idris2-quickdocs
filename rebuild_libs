@@ -1,0 +1,32 @@
+#!/usr/bin/env fish
+
+set dir $argv[1]
+
+if test ! $dir
+    echo Usage: (status -f) LIB_DIRECTORY
+    exit 1
+end
+
+
+mkdir -p data
+
+# set -x IDRIS2_DOCS_LATEST path/to/docs/idris2/current
+
+set data (realpath data)
+
+for pkgdir in $dir/*
+    pushd $pkgdir
+    set pkg (basename $pkgdir)
+    # for ipkg in *.ipkg
+    #     idris2 --mkdoc $ipkg
+    # end
+    idris2 --mkdoc $pkg.ipkg
+    
+    rsync -a build/docs/ $data/$pkg/
+    popd
+end
+
+poetry run ./mkindex.py data
+poetry run ./mkhome.py data
+
+chmod -R ugo+rX data

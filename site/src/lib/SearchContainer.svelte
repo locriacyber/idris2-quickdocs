@@ -2,10 +2,30 @@
 import type { IndexEntry } from "$lib/search"
 import { search } from "$lib/search"
 import VirtualList from "svelte-virtual-list-ce"
+import { goto, afterNavigate } from "$app/navigation"
+import { page } from "$app/stores"
+import { onMount } from "svelte";
 
 export let data: IndexEntry[] = []
-export let selected: IndexEntry | undefined
 export let searchTerm = ""
+export let name: string | undefined
+export let namespace: string | undefined
+export let selected: IndexEntry | undefined
+
+$: {
+  if (selected && selected.name == name && selected.namespace == namespace) {}
+  else
+  for (const entry of data) {
+    if (entry.name == name && entry.namespace == namespace) {
+      selected = entry
+      break
+    }
+  }
+}
+
+onMount(() => {
+  requestAnimationFrame(resetScroll)
+})
 
 let search_results: IndexEntry[] = []
 $: search_results = search(searchTerm, data)
@@ -18,8 +38,21 @@ $: {
   })
 }
 
-function select(entry: IndexEntry) {
+export function resetScroll() {
+  for (let i =0;i<data.length;i++) {
+    if (data[i] == selected) {
+      el_list?.scrollToIndex(i, {
+        behavior: 'auto',
+      })
+      break
+    }
+  }
+}
+
+export function select(entry: IndexEntry) {
   selected = entry
+  name = selected.name
+  namespace = selected.namespace
 }
 </script>
 
