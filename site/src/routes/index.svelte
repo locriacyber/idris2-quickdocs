@@ -34,7 +34,7 @@ $: if (browser) {
         if (entry.name == name && entry.namespace == namespace) {
           selected = entry
           requestAnimationFrame(() => {
-            elSearch?.resetScroll()
+            elSearch?.scrollToSelected()
           })
           break
         }

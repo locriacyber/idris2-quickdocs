@@ -11,7 +11,7 @@ export let searchTerm = ""
 export let selected: IndexEntry | undefined
 
 onMount(() => {
-  requestAnimationFrame(resetScroll)
+  requestAnimationFrame(scrollToSelected)
 })
 
 let search_results: IndexEntry[] = []
@@ -27,15 +27,17 @@ $: {
 
 let v_start = 0, v_end = 0
 
-export function resetScroll() {
-  for (let i =0;i<data.length;i++) {
-    if (data[i] == selected && !(i >= v_start && i <= v_end)) {
-      el_list?.scrollToIndex(i, {
-        behavior: 'auto',
-      })
-      break
-    }
-  }
+export function scrollToSelected() {
+  // TODO : fix this
+  // the below is buggy
+  // for (let i =0;i<data.length;i++) {
+  //   if (data[i] == selected && !(i >= v_start && i <= v_end)) {
+  //     el_list?.scrollToIndex(i, {
+  //       behavior: 'auto',
+  //     })
+  //     break
+  //   }
+  // }
 }
 
 const dispatch = createEventDispatcher();
