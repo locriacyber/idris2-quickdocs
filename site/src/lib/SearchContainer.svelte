@@ -27,11 +27,21 @@ $: {
 
 let v_start = 0, v_end = 0
 
+
 export function scrollToSelected() {
+  if (el_list && selected) {
+    // el_list.scrollToIndex(0)
+    for (let i =0;i<data.length;i++) {
+      if (data[i] == selected) {
+        el_list.scrollToIndex(i) // this is buggy as fuck; can't even scroll to correct location
+      }
+    }
+  }
+  
   // TODO : fix this
   // the below is buggy
   // for (let i =0;i<data.length;i++) {
-  //   if (data[i] == selected && !(i >= v_start && i <= v_end)) {
+  //   if (selected && data_eq(data[i], selected)) {
   //     el_list?.scrollToIndex(i, {
   //       behavior: 'auto',
   //     })

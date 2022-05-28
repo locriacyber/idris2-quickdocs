@@ -14,7 +14,7 @@ specifiers:
 
 dependencies:
   fuzzbunny: github.com/locriacyber/fuzzbunny/3c96a8573d4be9621d849d72b1e0898d49db700a
-  svelte-virtual-list-ce: github.com/gitbreaker222/svelte-virtual-list/31e7ed6faf2d037515fe0c9c3920866fb90bd236
+  svelte-virtual-list-ce: link:../../../lib/svelte-virtual-list
 
 devDependencies:
   '@sveltejs/adapter-static': 1.0.0-next.30
@@ -919,12 +919,6 @@ packages:
   /wrappy/1.0.2:
     resolution: {integrity: sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=}
     dev: true
-
-  github.com/gitbreaker222/svelte-virtual-list/31e7ed6faf2d037515fe0c9c3920866fb90bd236:
-    resolution: {tarball: https://codeload.github.com/gitbreaker222/svelte-virtual-list/tar.gz/31e7ed6faf2d037515fe0c9c3920866fb90bd236}
-    name: svelte-virtual-list-ce
-    version: 3.1.0-beta.2
-    dev: false
 
   github.com/locriacyber/fuzzbunny/3c96a8573d4be9621d849d72b1e0898d49db700a:
     resolution: {tarball: https://codeload.github.com/locriacyber/fuzzbunny/tar.gz/3c96a8573d4be9621d849d72b1e0898d49db700a}

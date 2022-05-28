@@ -33,10 +33,6 @@ $: if (browser) {
       for (const entry of await data) {
         if (entry.name == name && entry.namespace == namespace) {
           selected = entry
-          requestAnimationFrame(() => {
-            elSearch?.scrollToSelected()
-          })
-          break
         }
       }
     })()
