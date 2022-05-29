@@ -1,18 +1,12 @@
 <script lang="ts">
 import type { IndexEntry } from "$lib/search"
 import { search } from "$lib/search"
+import { createEventDispatcher } from "svelte"
 import VirtualList from "svelte-virtual-list-ce"
-import { goto, afterNavigate } from "$app/navigation"
-import { page } from "$app/stores"
-import { onMount, createEventDispatcher } from "svelte";
 
 export let data: IndexEntry[] = []
 export let searchTerm = ""
 export let selected: IndexEntry | undefined
-
-onMount(() => {
-  requestAnimationFrame(scrollToSelected)
-})
 
 let search_results: IndexEntry[] = []
 $: search_results = search(searchTerm, data)
@@ -27,27 +21,14 @@ $: {
 
 let v_start = 0, v_end = 0
 
-
 export function scrollToSelected() {
   if (el_list && selected) {
-    // el_list.scrollToIndex(0)
     for (let i =0;i<data.length;i++) {
       if (data[i] == selected) {
-        el_list.scrollToIndex(i) // this is buggy as fuck; can't even scroll to correct location
+        el_list.scrollToIndex(i, {behavior:'auto'}) // this is buggy as fuck; can't even scroll to correct location
       }
     }
   }
-  
-  // TODO : fix this
-  // the below is buggy
-  // for (let i =0;i<data.length;i++) {
-  //   if (selected && data_eq(data[i], selected)) {
-  //     el_list?.scrollToIndex(i, {
-  //       behavior: 'auto',
-  //     })
-  //     break
-  //   }
-  // }
 }
 
 const dispatch = createEventDispatcher();

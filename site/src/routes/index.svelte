@@ -24,20 +24,24 @@ function onNavigate(event: CustomEvent<IndexEntry>) {
   goto(url.toString())
 }
 
-$: if (browser) {
-  const to = $page.url
-  let name = to.searchParams.get("id") || undefined
-  let namespace = to.searchParams.get("ns") || undefined
-  if (name && namespace) {
-    ;(async () => {
-      for (const entry of await data) {
+onMount(async () => {
+  const data_ = await data
+  if (elSearch) {
+    const el = elSearch
+    const to = $page.url
+    let name = to.searchParams.get("id") || undefined
+    let namespace = to.searchParams.get("ns") || undefined
+    if (name && namespace) {
+      for (const entry of data_) {
         if (entry.name == name && entry.namespace == namespace) {
           selected = entry
+          requestAnimationFrame(() => el.scrollToSelected())
+          return
         }
       }
-    })()
+    }
   }
-}
+})
 </script>
 
 <div class="flex-container">
