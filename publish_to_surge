@@ -1,7 +1,5 @@
 #!/usr/bin/env fish
-
 cd (status dirname)
 pushd site
 pnpm build
 surge build idris2-quickdocs.surge.sh
-
