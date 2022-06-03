@@ -1,5 +1,5 @@
 <script lang="ts">
-import SearchContainer from "$lib/SearchContainer.svelte"
+import SideBar from "$lib/SideBar.svelte"
 import { onMount } from "svelte"
 import { fetchIndex } from "$lib/search"
 import type { IndexEntry } from "$lib/search"
@@ -52,7 +52,7 @@ onMount(async () => {
     {#await data}
       <div>Loading</div>
     {:then data}
-      <SearchContainer
+      <SideBar
         data="{data}"
         bind:selected
         bind:this="{elSearch}"

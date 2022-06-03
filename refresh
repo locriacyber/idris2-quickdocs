@@ -1,0 +1,4 @@
+#!/usr/bin/env fish
+
+poetry run ./mkindex.py data
+poetry run ./mkhome.py data
