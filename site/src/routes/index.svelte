@@ -73,8 +73,6 @@ onMount(async () => {
 #sidebar {
   width: 280px;
   height: 100%;
-  display: flex;
-  flex-direction: column;
   border-right: 1px solid #ccc;
 }
 
