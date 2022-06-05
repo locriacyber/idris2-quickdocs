@@ -42,8 +42,9 @@ class IndexBuilder:
                 traceback.print_exc()
 
         self.entries.sort(key=sortkey)
+        entries = list(set(self.entries))
         with open(self.root / 'index.json', 'w') as f:
-            json.dump(self.entries, f)
+            json.dump(entries, f)
 
     def scan(self, source):
         entries = []
