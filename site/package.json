@@ -22,7 +22,10 @@
   },
   "type": "module",
   "dependencies": {
+    "@types/lodash": "^4.14.182",
+    "fast-fuzzy": "^1.11.2",
     "fuzzbunny": "https://github.com/locriacyber/fuzzbunny#master",
+    "lodash": "^4.17.21",
     "svelte-virtual-list-ce": "https://github.com/gitbreaker222/svelte-virtual-list#master"
   }
 }

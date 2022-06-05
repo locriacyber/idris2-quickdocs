@@ -17,6 +17,7 @@ export type IndexEntry = {
   namespace: string
   package: string
   target: string
+  fullname?: string
 }
 
 export async function fetchIndex(url) {
@@ -36,14 +37,15 @@ import { fuzzyFilter1 } from "fuzzbunny/fuzzbunny.ts"
 import type { FuzzyFilterResult1 } from "fuzzbunny/fuzzybunny-extra";
 
 export function weighted(o: FuzzyFilterResult1<IndexEntry>) {
+    let fullname = o.scores.fullname || 0
     let name = o.scores.name || 0
     let namespace = o.scores.namespace || 0
-    return name * 5 + namespace
+    return fullname + name * 5
 }
-  
+
 export function search(searchTerm: string, data: IndexEntry[]): IndexEntry[] {
     if (searchTerm == "") return data
-    return fuzzyFilter1(data, searchTerm, { fields: ["name", "namespace"] })
+    return fuzzyFilter1(data, searchTerm, { fields: ["name", "namespace", "fullname", "package"] })
       .sort((a, b) => weighted(b) - weighted(a))
       .map((o) => o.item)
 }

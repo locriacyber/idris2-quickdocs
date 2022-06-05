@@ -3,25 +3,27 @@ import type { IndexEntry } from "$lib/search"
 import { search } from "$lib/search"
 import { createEventDispatcher } from "svelte"
 import VirtualList from "svelte-virtual-list-ce"
-import { searchIdrisEntry } from "./async_search";
+import { searchIdrisEntry, type FilterOption } from "./async_search";
 import IdrisEntry from "./IdrisEntry.svelte";
 import PackageFilter from "./PackageFilter.svelte";
 import SearchBox from "./SearchBox.svelte";
 
 export let data: IndexEntry[] = []
 export let searchTerm = ""
-export let selected: IndexEntry | undefined
+export let selected: IndexEntry | undefined = undefined
 let filterOpen = false
 
 function toggelFilter() {
   filterOpen = !filterOpen
 }
 
-let allPackages: Set<string>
+let indexByPackage: Map<string, Array<IndexEntry>>
 $: {
-  allPackages = new Set()
+  indexByPackage = new Map()
   data.forEach(entry => {
-    allPackages.add(entry.package)
+    const entries = indexByPackage.get(entry.package) || []
+    entries.push(entry)
+    indexByPackage.set(entry.package, entries)
   })
 }
 
@@ -30,14 +32,22 @@ let selectedPackages: Array<string> = []
 let filterEnabled: boolean
 
 $: {
-  let filters = []
+  let options: FilterOption = {}
   const query = searchTerm.trim()
-  if (query) filters.push({query})
-  if (filterEnabled) filters.push({in_packages: selectedPackages})
-  searchIdrisEntry({
-    items: data,
-    filters
-  }).then(r => search_results = r)
+  if (query != "") options.query = query
+  if (filterEnabled) options.in_packages = selectedPackages
+  function update(it: Iterable<IndexEntry>) {
+    search_results = []
+    for (const newentry of it) {
+      search_results.push(newentry)
+    }    
+    search_results = search_results
+  }
+  
+  update(searchIdrisEntry({
+    items: indexByPackage,
+    options,
+  }))
 }
 
 /* scrolling magic below, no touch */
@@ -76,7 +86,7 @@ export function select(entry: IndexEntry) {
     <button on:click={toggelFilter}>filter</button>
   </dir>
   {#if filterOpen}
-    <PackageFilter items={Array.from(allPackages).sort()} bind:value={selectedPackages} bind:enabled={filterEnabled}/>
+    <PackageFilter items={Array.from(indexByPackage.keys()).sort()} bind:value={selectedPackages} bind:enabled={filterEnabled}/>
   {/if}
   <div id="results">
     <VirtualList items={search_results} bind:this={el_list} let:item={entry}>
